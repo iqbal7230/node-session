@@ -1,13 +1,17 @@
 import express from "express"
+import dotenv from "dotenv"
+import userRoutes from "./routes/user.routes.js";
+import  studentRoutes from "./routes/student.routes.js"
 
-const app = express()
+dotenv.config()
+const port = process.env.PORT || 8000;
 
-const port = 8000;
+const app = express();
+app.use(express.json())
 
-app.get('/', (req, res)=>{
-    res.status(200).json({message:"server live"})
-});
+app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/students", studentRoutes)
 
 app.listen(port, ()=>{
-    console.log(`server running on port :${port}`)
+    console.log(`serving running on port :${port}`)
 })
