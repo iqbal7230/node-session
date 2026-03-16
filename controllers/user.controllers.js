@@ -1,40 +1,36 @@
-let users = [
-  { id: 1, username: "Iqbal", password: "123", firstName: "Iqbal", lastName: "Ansari" },
-  { id: 2, username: "sachhi", password: "456", firstName: "sacchidanand", lastName: "Tripathi" }
-];
-
-let idCounter = 3;
+import pool from "../config/db.js";
 
 
-export const createUser = (req, res) => {
-  const { username, password, firstName, lastName } = req.body;
+export const createUser = async (req, res) => {
+  try {
+    const { username, password, firstName, lastName } = req.body;
 
-  const newUser = {
-    id: idCounter++,
-    username,
-    password,
-    firstName,
-    lastName
-  };
+    const result = await pool.query(
+      `INSERT INTO users1(username,password,first_name,last_name)
+       VALUES($1,$2,$3,$4) RETURNING *`,
+      [username, password, firstName, lastName]
+    );
 
-  users.push(newUser);
-
-  res.json(newUser);
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 
-
-export const getUsers = (req, res) => {
-  res.json(users);
+export const getUsers = async (req, res) => {
+  const result = await pool.query("SELECT * FROM users1");
+  res.json(result.rows);
 };
 
 
-export const searchUsers = (req, res) => {
+export const searchUsers = async (req, res) => {
   const { username } = req.query;
 
-  const result = users.filter(user =>
-    user.username.toLowerCase().startsWith(username.toLowerCase())
+  const result = await pool.query(
+    `SELECT * FROM users1 WHERE username ILIKE $1 LIMIT 10`,
+    [`${username}%`]
   );
 
-  res.json(result);
+  res.json(result.rows);
 };

@@ -1,35 +1,34 @@
-let students = [
-  { id: 1, name: "Arman", branch: "CSE", email: "aman@test.com" },
-  { id: 2, name: "Rohit", branch: "IT", email: "rohit@test.com" },
-  { id: 3, name: "Neha", branch: "CSE", email: "neha@test.com" },
-  { id: 4, name: "Sara", branch: "ECE", email: "sara@test.com" }
-];
+import pool from "../config/db.js";
 
 
+export const getStudents = async (req, res) => {
+  try {
+    const { branch } = req.query;
 
-export const getStudents = (req, res) => {
+    let query = "SELECT * FROM students";
+    let values = [];
 
-  const { branch } = req.query;
+    if (branch) {
+      query += " WHERE branch = $1";
+      values.push(branch);
+    }
 
-  if (branch) {
-    const filtered = students.filter(
-      s => s.branch.toLowerCase() === branch.toLowerCase()
-    );
-    return res.json(filtered);
+    const result = await pool.query(query, values);
+
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-
-  res.json(students);
 };
 
+export const deleteStudent = async (req, res) => {
+  try {
+    const { id } = req.params;
 
+    await pool.query("DELETE FROM students WHERE id=$1", [id]);
 
-export const deleteStudent = (req, res) => {
-
-  const id = parseInt(req.params.id);
-
-  students = students.filter(student => student.id !== id);
-
-  res.json({
-    message: "Student deleted successfully"
-  });
+    res.json({ message: "Student deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
