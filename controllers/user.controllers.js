@@ -1,6 +1,6 @@
 let users = [
-  { id: 1, username: "john", password: "123", firstName: "John", lastName: "Doe" },
-  { id: 2, username: "alex", password: "456", firstName: "Alex", lastName: "Smith" }
+  { id: 1, username: "Iqbal", password: "123", firstName: "Iqbal", lastName: "Ansari" },
+  { id: 2, username: "sachhi", password: "456", firstName: "sacchidanand", lastName: "Tripathi" }
 ];
 
 let idCounter = 3;

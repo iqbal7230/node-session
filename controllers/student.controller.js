@@ -1,5 +1,5 @@
 let students = [
-  { id: 1, name: "Aman", branch: "CSE", email: "aman@test.com" },
+  { id: 1, name: "Arman", branch: "CSE", email: "aman@test.com" },
   { id: 2, name: "Rohit", branch: "IT", email: "rohit@test.com" },
   { id: 3, name: "Neha", branch: "CSE", email: "neha@test.com" },
   { id: 4, name: "Sara", branch: "ECE", email: "sara@test.com" }
